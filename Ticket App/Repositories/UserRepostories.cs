@@ -14,7 +14,7 @@ namespace Ticket_App.Repositories
 
         public async Task<Guid> RegisterUser(UserDto userDto)
         {
-            var user = new User
+            var user = new Users
             {
                 Name= userDto.Name,
                 Email= userDto.Email,

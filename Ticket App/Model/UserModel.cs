@@ -6,7 +6,7 @@ namespace Ticket_App.Model
 {
 [Index(nameof(Email), IsUnique =true)]
 
-    public class User
+    public class Users
     {
         [Key]
         public Guid Id { get; set; }

@@ -1,4 +1,5 @@
-﻿using Ticket_App.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using Ticket_App.Context;
 using Ticket_App.Dto;
 using Ticket_App.Model;
 using Ticket_App.Repositories.interfaces;
@@ -10,6 +11,11 @@ namespace Ticket_App.Repositories
         private readonly UserContext context;
         public UserRepostories(UserContext _context) {
             context = _context;
+        }
+
+        public async Task<bool> FindUserByEmail(string email)
+        {
+            return await context.Users.AnyAsync(e => e.Email == email);
         }
 
         public async Task<Guid> RegisterUser(UserDto userDto)
@@ -28,5 +34,6 @@ namespace Ticket_App.Repositories
 
             return user.Id;
         }
+        
     }
 }

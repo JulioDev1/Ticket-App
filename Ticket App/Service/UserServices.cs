@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
 using Ticket_App.Dto;
 using Ticket_App.Repositories;
 using Ticket_App.Repositories.interfaces;
@@ -20,6 +21,11 @@ namespace Ticket_App.Service
        
         public async Task<Guid> RegisterUser(UserDto userDto)
         {
+            var emailExists = await userRepository.FindUserByEmail(userDto.Email);
+            if (emailExists)
+            {
+                throw new Exception("email already exists");
+            }
 
             var user = new UserDto
             {
@@ -32,5 +38,6 @@ namespace Ticket_App.Service
         
             return guid;
         }
+
     }
 }

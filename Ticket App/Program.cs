@@ -16,6 +16,8 @@ builder.Services.AddDbContext<UserContext>(options =>
 //services
 builder.Services.AddScoped<IUserRepository, UserRepostories>();
 builder.Services.AddScoped<IUserService, UserServices>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();

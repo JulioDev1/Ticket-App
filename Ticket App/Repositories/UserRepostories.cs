@@ -18,6 +18,13 @@ namespace Ticket_App.Repositories
             return await context.Users.AnyAsync(e => e.Email == email);
         }
 
+        public async Task<Users> GetUserByEmail(string email)
+        {
+           
+         return await context.Users.FirstOrDefaultAsync(u => u.Email == email);
+
+        }
+
         public async Task<Guid> RegisterUser(UserDto userDto)
         {
             var user = new Users

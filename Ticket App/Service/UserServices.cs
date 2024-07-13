@@ -19,6 +19,7 @@ namespace Ticket_App.Service
         }
 
        
+       
         public async Task<Guid> RegisterUser(UserDto userDto)
         {
             var emailExists = await userRepository.FindUserByEmail(userDto.Email);

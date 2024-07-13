@@ -1,4 +1,5 @@
 ﻿using Ticket_App.Dto;
+using Ticket_App.Model;
 
 namespace Ticket_App.Repositories.interfaces
 {
@@ -6,5 +7,10 @@ namespace Ticket_App.Repositories.interfaces
     {
         public Task<Guid> RegisterUser(UserDto userDto);
         public Task<bool> FindUserByEmail(string email);
+        public Task<Users?> GetUserByEmail(string email);
+
+
+           
+
     }
 }

@@ -9,8 +9,5 @@ namespace Ticket_App.Repositories.interfaces
         public Task<bool> FindUserByEmail(string email);
         public Task<Users?> GetUserByEmail(string email);
 
-
-           
-
     }
 }

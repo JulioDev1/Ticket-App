@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Ticket_App.Dto;
 using Ticket_App.Service.Interface;
 
@@ -23,6 +25,17 @@ namespace Ticket_App.Controllers
                 return Unauthorized();
 
             return Ok(AcessToken);
+        }
+        [HttpGet("verify")]
+        public ActionResult verifyToken(string token)
+
+        {
+            if(tokenService.VerifyValidToken(token,  out var claims))
+            {
+
+                return Ok("token is valid");
+            }
+            return Unauthorized();
         }
     }
 }

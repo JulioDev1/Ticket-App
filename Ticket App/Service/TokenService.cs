@@ -42,7 +42,7 @@ namespace Ticket_App.Service
 
 
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:key"] ?? String.Empty));
-            var issuer = configuration["Jwt:issuer"];
+            var issuer = configuration["Jwt:Issuer"];
             var audience = configuration["Jwt:Audience"];
 
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
@@ -62,6 +62,36 @@ namespace Ticket_App.Service
 
             return token;
 
+        }
+
+        public bool VerifyValidToken(string token, out ClaimsPrincipal claims)
+        {
+            claims = null;
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var issuer = configuration["Jwt:Issuer"];
+            var audience = configuration["Jwt:Audience"];
+            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:key"] ?? String.Empty));
+
+            try
+            {
+                var validatorParameter = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = secretKey,
+                    ValidateIssuer = true,
+                    ValidIssuer = issuer,
+                    ValidateAudience = true,
+                    ValidAudience = audience,
+                    ClockSkew = TimeSpan.Zero
+                };
+                claims = tokenHandler.ValidateToken(token, validatorParameter, out SecurityToken validatedToken);
+                return true;
+
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

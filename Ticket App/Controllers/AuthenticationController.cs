@@ -32,7 +32,6 @@ namespace Ticket_App.Controllers
         {
             if(tokenService.VerifyValidToken(token,  out var claims))
             {
-
                 return Ok("token is valid");
             }
             return Unauthorized();

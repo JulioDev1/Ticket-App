@@ -8,6 +8,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Dto\NovaPasta1\**" />
+    <Compile Remove="Dto\NovaPasta\**" />
+    <Content Remove="Dto\NovaPasta1\**" />
+    <Content Remove="Dto\NovaPasta\**" />
+    <EmbeddedResource Remove="Dto\NovaPasta1\**" />
+    <EmbeddedResource Remove="Dto\NovaPasta\**" />
+    <None Remove="Dto\NovaPasta1\**" />
+    <None Remove="Dto\NovaPasta\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Dto\NovaPasta2\Class.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.7">

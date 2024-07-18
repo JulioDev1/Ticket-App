@@ -32,7 +32,12 @@ namespace Ticket_App.Model
         public Guid Id { get; set; }
         public required string Name { get; set; }
         public required string Description { get; set; }
-        public DateTime Created { get; set; }   
+        private DateTime _created { get; set; } 
+        public DateTime Created { get=> _created; set=>_created = DateTime.UtcNow; }   
+        public DateTime DateInit
+        {
+            get; set;
+        }
         public Guid UserId { get; set; }
         public Users? User { get; set; }
         public Tickets Ticket { get; set; } = null!; 

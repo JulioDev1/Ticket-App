@@ -27,10 +27,13 @@ namespace Ticket_App.Controllers
 
         [Authorize]
         public async Task<ActionResult<Guid>> CreateEvent([FromBody] CreateEventRequest request)
-           
-            
         {
             var userId = Guid.Parse(User.Claims.First(c=> c.Type == ClaimTypes.NameIdentifier).Value);
+
+            if(userId == Guid.Empty)
+            {
+                Unauthorized("user desconnected");
+            }
 
             request.eventsDto.UserId = userId;
 

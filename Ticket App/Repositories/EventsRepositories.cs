@@ -14,14 +14,17 @@ namespace Ticket_App.Repositories
         }
         public async Task<Events> CreateEvent(EventsDto eventsDto)
         {
+            DateTime formatedData = DateTime.Now;
+
             var createEvent = new Events
             {
                 Name = eventsDto.Name,
                 Description = eventsDto.Description,
-                UserId = eventsDto.UserId,  
+                UserId = eventsDto.UserId,
+                DateInit = eventsDto.DataInit,
+                Created = formatedData
             };
-           
-            
+
             await context.Events.AddAsync(createEvent);
             return createEvent;
         }

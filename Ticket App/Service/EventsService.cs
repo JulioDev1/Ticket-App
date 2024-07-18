@@ -1,4 +1,5 @@
-﻿using Ticket_App.Dto;
+﻿using System.Security.Claims;
+using Ticket_App.Dto;
 using Ticket_App.Model;
 using Ticket_App.Repositories.interfaces;
 using Ticket_App.Service.Interface;
@@ -16,11 +17,14 @@ namespace Ticket_App.Service
         }
         public async Task<Guid> CreateEvent(EventsDto eventsDto, TicketsDto ticketsDto)
         {
+
+
             var eventCreate = new EventsDto
             {
                 Description = eventsDto.Description,
                 Name = eventsDto.Name,
                 UserId = eventsDto.UserId,  
+                DataInit = eventsDto.DataInit,  
             };
 
             var createEvent = await eventRepositories.CreateEvent(eventCreate);

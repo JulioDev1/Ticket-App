@@ -24,7 +24,6 @@ builder.Services.AddScoped<IEventRepositories, EventsRepositories>();
 builder.Services.AddScoped<IUserService, UserServices>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IEventsService, EventsService>();    
-
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var secretkey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["key"] ?? String.Empty));
 var audience = jwtSettings["Audience"];

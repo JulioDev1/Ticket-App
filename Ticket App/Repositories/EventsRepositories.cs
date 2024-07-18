@@ -18,6 +18,7 @@ namespace Ticket_App.Repositories
             {
                 Name = eventsDto.Name,
                 Description = eventsDto.Description,
+                UserId = eventsDto.UserId,  
             };
            
             

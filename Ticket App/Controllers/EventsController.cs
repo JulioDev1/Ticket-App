@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Security.Claims;
 using Ticket_App.Dto;
 using Ticket_App.Dto.NovaPasta2;
+using Ticket_App.Model;
 using Ticket_App.Service.Interface;
+
 
 namespace Ticket_App.Controllers
 {
@@ -13,6 +16,7 @@ namespace Ticket_App.Controllers
     public class EventsController : ControllerBase
     {
     private readonly IEventsService eventsService;
+    
 
         public EventsController(IEventsService _eventsService)
         {
@@ -26,16 +30,9 @@ namespace Ticket_App.Controllers
            
             
         {
+            var userId = Guid.Parse(User.Claims.First(c=> c.Type == ClaimTypes.NameIdentifier).Value);
 
-            var idConvert = new Guid(ClaimTypes.NameIdentifier);
-            var userId = await eventsService.GetUserId(idConvert);
-
-            
-
-            if(userId == null)
-            {
-                return Unauthorized("unauthorized");
-            }
+            request.eventsDto.UserId = userId;
 
             var user = await eventsService.CreateEvent(request.eventsDto, request.ticketsDto);
 

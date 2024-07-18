@@ -20,6 +20,7 @@ namespace Ticket_App.Service
             {
                 Description = eventsDto.Description,
                 Name = eventsDto.Name,
+                UserId = eventsDto.UserId,  
             };
 
             var createEvent = await eventRepositories.CreateEvent(eventCreate);

@@ -62,5 +62,5 @@ namespace Ticket_App.Model
         public Guid TicketId { get; set; }
         public Users User { get; set; } = null!;
         public Tickets Ticket { get; set;} = null!;
-    }
+    }  
 }

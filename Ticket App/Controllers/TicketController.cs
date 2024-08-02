@@ -21,41 +21,47 @@ namespace Ticket_App.Controllers
 
         [HttpPost("ticket-buy")]
         [Authorize]
-        public async Task <ActionResult<Guid>> userBuyedTicketEvent(Guid userId, Guid TicketId)
+        public async Task <ActionResult<Guid>> userBuyedTicketEvent(Guid userId, Guid TicketId, PaymentDto paymentDto)
         {
-            var id = Guid.Parse(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
-
-            var email = (User.Claims.First(c=> c.Type == ClaimTypes.Name));
-
-           
-
-            if (id == Guid.Empty && email == null)
+            try
             {
-                Unauthorized("user desconnected");
+                var id = Guid.Parse(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
+
+                var email = (User.Claims.First(c => c.Type == ClaimTypes.Name));
+
+
+
+                if (id == Guid.Empty && email == null)
+                {
+                    Unauthorized("user desconnected");
+                }
+
+
+                var ticket = await ticketsService.FindTicketById(TicketId);
+
+                if (ticket is null)
+                {
+                    throw new Exception("ticket is not exists");
+                }
+
+
+
+                var price = (decimal)ticket.Price;
+
+                paymentDto.TransactionAmount = price;
+                paymentDto.Email = email!.Value;
+
+                
+                var guid = await ticketsService.UserBuyedTicketEvent(id, TicketId);
+
+                await ticketsService.CreatePayment(paymentDto);
+
+                return Ok();
             }
-
-
-            var ticket = await ticketsService.FindTicketById(TicketId);
-
-            if (ticket is null)
-            {
-                throw new Exception("ticket is not exists");
-            }
-
+            catch (Exception ex) { 
+                return BadRequest(ex.Message);  
+            }   
             
-
-            var price = (decimal)ticket.Price;
-            var payment = new PaymentDto
-            {
-                Amount = price,
-                Email = email!.Value,
-            };
-
-            await ticketsService.CreatePayment(payment);
-
-            var guid = await ticketsService.UserBuyedTicketEvent(id, TicketId);
-
-            return Ok(guid);
         }
     }
 }

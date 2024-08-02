@@ -1,6 +1,10 @@
-﻿using MercadoPago.Client.Payment;
+﻿using MercadoPago.Client;
+using MercadoPago.Client.Common;
+using MercadoPago.Client.Payment;
 using MercadoPago.Config;
+using MercadoPago.Http;
 using MercadoPago.Resource.Payment;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Ticket_App.Dto;
 using Ticket_App.Model;
 using Ticket_App.Repositories.interfaces;
@@ -16,32 +20,39 @@ namespace Ticket_App.Service
         {
             this.ticketRepositories = ticketRepositories;
         }
+        //**
 
         public async Task<(Payment, string)> CreatePayment(PaymentDto paymentDto)
         {
+            
+            MercadoPagoConfig.AccessToken = "TEST-4001436950340394-073017-57f573a54a687d75967288bb1cf132a7-555970033";
 
-            MercadoPagoConfig.AccessToken = "APP_USR-1468252611278931-042916-be1ae241375285de1a6a3c906b5f5864-1792306976";
+            var requestOptions = new RequestOptions();
 
-            if (paymentDto is null)
-            {
-                throw new Exception("is invalid");
-            }
+            requestOptions.CustomHeaders.Add("x-idempotency-key", Guid.NewGuid().ToString());
 
-            var request = new PaymentCreateRequest
-            {
-                TransactionAmount = paymentDto.Amount,
-                Description = "ticket buyed",
-                Installments = 1,
-                PaymentMethodId = "visa",
-                Payer = new PaymentPayerRequest
-                {
-                    Email = paymentDto.Email,
-                }
-            };
 
             var client = new PaymentClient();
-            Payment payment = await client.CreateAsync(request);
-            
+            var paymentRequest = new PaymentCreateRequest
+            {
+                TransactionAmount = paymentDto.TransactionAmount,
+                Token = paymentDto.Token,
+                Description = paymentDto.Description,
+                Installments = paymentDto.Installments,
+                PaymentMethodId =paymentDto.PaymentMethodId,
+                Payer = new PaymentPayerRequest
+                {
+                    Email =paymentDto.Email,
+                    Identification = new IdentificationRequest
+                    {
+                        Type = paymentDto.Type,
+                        Number = paymentDto.Number,
+                    },
+                },
+            };
+
+            Payment payment = await client.CreateAsync(paymentRequest, requestOptions);
+
 
             if (payment.Status == "approved")
             {

@@ -23,7 +23,10 @@ builder.Services.AddScoped<IUserRepository, UserRepostories>();
 builder.Services.AddScoped<IEventRepositories, EventsRepositories>();
 builder.Services.AddScoped<IUserService, UserServices>();
 builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<IEventsService, EventsService>();    
+builder.Services.AddScoped<IEventsService, EventsService>();
+builder.Services.AddScoped<ITicketRepositories, TicketRepositories>();
+builder.Services.AddScoped<ITicketsService, TicketService>();
+
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var secretkey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["key"] ?? String.Empty));
 var audience = jwtSettings["Audience"];

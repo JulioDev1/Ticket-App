@@ -19,17 +19,35 @@ namespace Ticket_App.Repositories
             return await context.Tickets.FirstOrDefaultAsync(t =>t.Id == ticketId);
         }
 
-        public async Task<Guid> UserBuyedTicketEvent(Guid userId, Guid tickedId)
+        public async Task<Users?> GetUserById(Guid Id)
         {
-            var userTicket = new UserTickets
+            return await context.Users.FirstOrDefaultAsync(user => user.Id == Id);
+
+        }
+
+        public async Task<Guid> UserBuyedTicketEvent(Users users, Tickets tickets)
+        {
+            try
             {
-                TicketId = tickedId,
-                UsersId = userId
-            };
-           context.UserTickets.Add(userTicket);
-           await context.SaveChangesAsync();
-           
-           return userTicket.UsersId;
+                var userTicket = new UserTickets
+                {
+                    TicketId = tickets.Id ,
+                    UsersId =users.Id,
+                    User = users,
+                    Ticket = tickets, 
+                    
+                };
+                
+                context.UserTickets.Add(userTicket);
+                
+                await context.SaveChangesAsync();
+
+                return userTicket.UsersId;
+            }
+            catch(Exception ex) {
+                Console.WriteLine(ex.InnerException);
+                throw new Exception(ex.Message);
+            }
         }
        
     }

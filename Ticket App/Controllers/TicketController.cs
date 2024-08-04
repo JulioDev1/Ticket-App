@@ -21,17 +21,13 @@ namespace Ticket_App.Controllers
 
         [HttpPost("ticket-buy")]
         [Authorize]
-        public async Task <ActionResult<Guid>> userBuyedTicketEvent(Guid userId, Guid TicketId, PaymentDto paymentDto)
+        public async Task <ActionResult<Guid>> userBuyedTicketEvent(Guid userId, Guid TicketId)
         {
             try
             {
                 var id = Guid.Parse(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
-                var email = (User.Claims.First(c => c.Type == ClaimTypes.Name));
-
-
-
-                if (id == Guid.Empty && email == null)
+                if (id == Guid.Empty)
                 {
                     Unauthorized("user desconnected");
                 }
@@ -44,17 +40,10 @@ namespace Ticket_App.Controllers
                     throw new Exception("ticket is not exists");
                 }
 
-
-
                 var price = (decimal)ticket.Price;
-
-                paymentDto.TransactionAmount = price;
-                paymentDto.Email = email!.Value;
-
                 
                 var guid = await ticketsService.UserBuyedTicketEvent(id, TicketId);
 
-                await ticketsService.CreatePayment(paymentDto);
 
                 return Ok();
             }

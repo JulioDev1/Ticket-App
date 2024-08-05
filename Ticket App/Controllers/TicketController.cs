@@ -21,6 +21,8 @@ namespace Ticket_App.Controllers
 
         [HttpPost("ticket-buy")]
         [Authorize]
+
+
         public async Task <ActionResult<Guid>> userBuyedTicketEvent(Guid userId, Guid TicketId)
         {
             try

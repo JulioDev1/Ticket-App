@@ -58,6 +58,7 @@ namespace Ticket_App.Model
     public class UserTickets
     {
         [Key]
+        public Guid Id { get; set; }    
         public Guid UsersId { get; set; }    
         public Guid TicketId { get; set; }
         public Users User { get; set; } = null!;

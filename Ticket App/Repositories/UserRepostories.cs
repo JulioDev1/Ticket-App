@@ -20,9 +20,7 @@ namespace Ticket_App.Repositories
 
         public async Task<Users?> GetUserByEmail(string email)
         {
-           
-         return await context.Users.FirstOrDefaultAsync(u => u.Email == email);
-
+            return await context.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
 

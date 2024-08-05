@@ -14,7 +14,5 @@ namespace Ticket_App.Dto
         public string Type { get; set; }
         public string Number { get; set; }
 
-
-
     };
 }

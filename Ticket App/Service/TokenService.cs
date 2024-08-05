@@ -49,7 +49,7 @@ namespace Ticket_App.Service
 
             var tokenOptions = new JwtSecurityToken(audience:audience, issuer:issuer, claims: new[]
             {
-                new Claim(type:ClaimTypes.Name, userDatabase!.Email),
+                new Claim(type:ClaimTypes.Email, userDatabase!.Email),
                 new Claim(type:ClaimTypes.NameIdentifier, userDatabase.Id.ToString())
 
             },

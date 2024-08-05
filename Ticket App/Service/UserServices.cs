@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Ticket_App.Dto;
+using Ticket_App.Model;
 using Ticket_App.Repositories;
 using Ticket_App.Repositories.interfaces;
 using Ticket_App.Service.Interface;
@@ -17,7 +18,7 @@ namespace Ticket_App.Service
             userRepository = _userRepository;
             criptography = new PasswordHasher<string> ();
         }
-
+        
        
        
         public async Task<Guid> RegisterUser(UserDto userDto)
@@ -40,5 +41,9 @@ namespace Ticket_App.Service
             return guid;
         }
 
+        public async Task<Users?> GetUserByEmail(string email)
+        {
+            return await userRepository.GetUserByEmail(email);
+        }
     }
 }

@@ -52,7 +52,7 @@ namespace Ticket_App.Controllers
         [Authorize]
         public  async Task <ActionResult<decimal>> Calculate()
         {
-            var email = Guid.Parse(User.Claims.First(c => c.Type == ClaimTypes.Email).Value);
+            var email = (User.Claims.First(c => c.Type == ClaimTypes.Email).Value);
 
             var user = await userService.GetUserByEmail(email.ToString());
 

@@ -45,5 +45,15 @@ namespace Ticket_App.Service
         {
             return await userRepository.GetUserByEmail(email);
         }
+
+        public async Task<Users?> GetUserById(Guid id)
+        {
+           return await userRepository.GetUserById(id);
+        }
+
+        public async Task<List<Tickets>> ListUserTickets(Guid id)
+        {
+            return await userRepository.ListUserTickets(id);
+        }
     }
 }

@@ -7,6 +7,9 @@ namespace Ticket_App.Service.Interface
     {
         Task<Guid> RegisterUser(UserDto userDto);
         Task<Users?> GetUserByEmail(string email);
+        Task<Users?> GetUserById(Guid id);
+        Task<List<Tickets>> ListUserTickets(Guid id);
+
 
     }
 }

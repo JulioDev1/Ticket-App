@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Npgsql.Internal;
 using System.Numerics;
 using System.Security.Claims;
 using System.Threading.Tasks.Dataflow;
@@ -29,32 +30,30 @@ namespace Ticket_App.Controllers
         }
         [HttpGet("get-all-tickets")]
         [Authorize]
-        public async Task<ActionResult<Tickets[]>> GetAllUserTickets(UserDto userDto)
+        public async Task<ActionResult<List<Tickets>>> GetAllUserTickets()
         {
-            var email = Guid.Parse(User.Claims.First(c => c.Type == ClaimTypes.Email).Value);
-           
 
-            var user = await userService.GetUserByEmail(email.ToString());
-            if (user is null)
+            var id = (User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
+            var guid = Guid.Parse(id);
+
+
+            var ticket = await userService.ListUserTickets(guid);
+            if (ticket.Count > 0)
             {
-                new Exception("user not found ");
+                new Exception("user not found");
             }
-            var ticket = user!.Tickets.ToList();
-            if(ticket.Count > 0)
-            {
-                new Exception("user not ticket");
-            }
-                
-            return Ok(ticket);  
+
+            return ticket;
 
         }
         [HttpGet("calculate-total")]
         [Authorize]
         public  async Task <ActionResult<decimal>> Calculate()
         {
-            var email = (User.Claims.First(c => c.Type == ClaimTypes.Email).Value);
+            var id = (User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
+            var guid = Guid.Parse(id);
 
-            var user = await userService.GetUserByEmail(email.ToString());
+            var user = await userService.GetUserById(guid);
 
             if(user is null)
             {

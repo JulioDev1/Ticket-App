@@ -23,6 +23,15 @@ namespace Ticket_App.Repositories
             return await context.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
+        public async Task<Users?> GetUserById(Guid id)
+        {
+            return await context.Users.SingleOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<List<Tickets>> ListUserTickets(Guid id)
+        {
+            return await context.UserTickets.Where(x => x.UsersId == id).Select(x => x.Ticket).ToListAsync();
+        }
 
         public async Task<Guid> RegisterUser(UserDto userDto)
         {

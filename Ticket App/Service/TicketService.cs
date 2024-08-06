@@ -6,6 +6,7 @@ using MercadoPago.Http;
 using MercadoPago.Resource.Payment;
 using MercadoPago.Resource.User;
 using Microsoft.AspNetCore.Http.HttpResults;
+using System.Runtime.InteropServices;
 using Ticket_App.Dto;
 using Ticket_App.Model;
 using Ticket_App.Repositories;
@@ -31,7 +32,6 @@ namespace Ticket_App.Service
             }
             return ticket;
         }
-    
 
         public async Task<Guid> UserBuyedTicketEvent(Guid userId, Guid tickedId)
         {

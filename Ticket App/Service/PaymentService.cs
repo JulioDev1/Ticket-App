@@ -28,7 +28,7 @@ namespace Ticket_App.Service
                 Description = paymentDto.Description,
                 Installments = paymentDto.Installments,
                 PaymentMethodId = paymentDto.PaymentMethodId,
-
+                IssuerId = paymentDto.IssuerId,
                 Payer = new PaymentPayerRequest
                 {
                     Email = paymentDto.Email,

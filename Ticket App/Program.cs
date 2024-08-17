@@ -11,6 +11,7 @@ using Ticket_App.Service;
 using Ticket_App.Service.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 // Add services to the container.
 builder.Services.AddDbContext<UserContext>(options =>
@@ -48,11 +49,23 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:key"])),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:key"]!)),
         ValidAudience = builder.Configuration["Jwt:Audience"],
         ClockSkew = TimeSpan.Zero
     };
 });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins, policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+    }
+    );
+}
+);
 
 builder.Services.AddControllers();
 
@@ -73,7 +86,7 @@ builder.Services.AddSwaggerGen(options =>
         Scheme ="Bearer",
         BearerFormat ="JWT",
         In = ParameterLocation.Header,
-        Description = "Cabeçalho de autorização jwt"
+        Description = "Cabeï¿½alho de autorizaï¿½ï¿½o jwt"
     });
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
@@ -93,17 +106,17 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
+app.UseCors(MyAllowSpecificOrigins);
 // Configure the HTTP request pipeline.
+app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-
-app.UseAuthentication();
-app.UseAuthorization();
 
 app.MapControllers();
 

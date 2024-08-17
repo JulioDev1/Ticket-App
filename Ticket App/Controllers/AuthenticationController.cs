@@ -24,7 +24,10 @@ namespace Ticket_App.Controllers
             if(AcessToken == "")
                 return Unauthorized();
 
-            return Ok(AcessToken);
+            return Ok(new {
+                Token = AcessToken,
+                Message = "login sucessfully"
+            });
         }
         [HttpGet("verify")]
         public ActionResult verifyToken(string token)

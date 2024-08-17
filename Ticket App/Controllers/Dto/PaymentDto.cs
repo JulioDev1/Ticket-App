@@ -10,6 +10,7 @@ namespace Ticket_App.Dto
         public string Token { get; set; }   
         public int Installments { get; set; }
         public string PaymentMethodId { get; set; }
+        public string IssuerId { get; set; }
         public string Email { get; set; }
         public string Type { get; set; }
         public string Number { get; set; }

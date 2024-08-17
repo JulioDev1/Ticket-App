@@ -53,20 +53,15 @@ namespace Ticket_App.Controllers
             var id = (User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
             var guid = Guid.Parse(id);
 
-            var user = await userService.GetUserById(guid);
+            var ticket = await userService.ListUserTickets(guid);
 
-            if(user is null)
+            if(ticket is null)
             {
                 new Exception("user not found ");
             }
-            var price = user!.Tickets.Select(t => t.Price).ToList();
+            var price = ticket!.Sum(p => p.Price);
 
-            if(price.Count > 0)
-            {
-                throw new Exception("no have tickets");
-            }
-
-            var priceTotal = (decimal)price.Sum();
+            var priceTotal = (decimal)price;
 
             return priceTotal;
         }

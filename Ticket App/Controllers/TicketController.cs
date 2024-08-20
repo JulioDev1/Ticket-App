@@ -23,7 +23,7 @@ namespace Ticket_App.Controllers
         [Authorize]
 
 
-        public async Task <ActionResult<Guid>> userBuyedTicketEvent(Guid userId, Guid TicketId)
+        public async Task <ActionResult<Guid>> userBuyedTicketEvent(Guid userId, [FromQuery] Guid ticketId)
         {
             try
             {
@@ -35,7 +35,7 @@ namespace Ticket_App.Controllers
                 }
 
 
-                var ticket = await ticketsService.FindTicketById(TicketId);
+                var ticket = await ticketsService.FindTicketById(ticketId);
 
                 if (ticket is null)
                 {
@@ -44,7 +44,7 @@ namespace Ticket_App.Controllers
 
                 var price = (decimal)ticket.Price;
                 
-                var guid = await ticketsService.UserBuyedTicketEvent(id, TicketId);
+                var guid = await ticketsService.UserBuyedTicketEvent(id, ticketId);
 
 
                 return Ok();

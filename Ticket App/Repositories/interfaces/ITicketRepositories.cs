@@ -9,5 +9,7 @@ namespace Ticket_App.Repositories.interfaces
         public Task<Users?> GetUserById(Guid Id);
 
         public Task<Tickets?> FindTicketById(Guid ticketId);
+
+     
     }
 }

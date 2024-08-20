@@ -33,6 +33,8 @@ namespace Ticket_App.Repositories
             return await context.UserTickets.Where(x => x.UsersId == id).Select(x => x.Ticket).ToListAsync();
         }
 
+
+
         public async Task<Guid> RegisterUser(UserDto userDto)
         {
             var user = new Users

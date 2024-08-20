@@ -28,7 +28,7 @@ namespace Ticket_App.Controllers
             return Ok(guid);
 
         }
-        [HttpGet("get-all-tickets")]
+        [HttpGet("get-all-user-tickets")]
         [Authorize]
         public async Task<ActionResult<List<Tickets>>> GetAllUserTickets()
         {

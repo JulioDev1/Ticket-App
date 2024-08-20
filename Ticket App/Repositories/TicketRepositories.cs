@@ -24,6 +24,7 @@ namespace Ticket_App.Repositories
             return await context.Users.FirstOrDefaultAsync(user => user.Id == Id);
 
         }
+       
 
         public async Task<Guid> UserBuyedTicketEvent(Users users, Tickets tickets)
         {

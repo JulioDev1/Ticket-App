@@ -9,7 +9,7 @@ namespace Ticket_App.Service.Interface
         Task<Guid> CreateEvent(EventsDto eventsDto, TicketsDto ticketsDto);
         public Task<Users?> GetUserId(Guid userId);
 
-        Task<EventsDto> UserUpdateYourEvent(Guid eventId, Guid userId ,UpdateEventDto eventsDto);
+        Task<Events> UserUpdateYourEvent(Guid eventId, Guid userId, Events events);
       
 
     }

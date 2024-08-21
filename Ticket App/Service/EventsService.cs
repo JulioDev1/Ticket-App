@@ -43,24 +43,23 @@ namespace Ticket_App.Service
         return user;
         }
 
-        public async Task<UpdateEventDto> UserUpdateYourEvent(Guid eventId, Guid userId, UpdateEventDto eventsDto)
+        public async Task<Events> UserUpdateYourEvent(Guid eventId, Guid userId, Events events)
         {
-            var events = await eventRepositories.UserEventCreatorFind(eventId, userId);
+            var eventsUser = await eventRepositories.UserEventCreatorFind(eventId, userId);
 
-            if (events is null)
+            if (eventsUser is null)
             {
                 throw new Exception("events not found");
             }
 
-            var UpdatedEvent = new UpdateEventDto
-            {
-                DataInit = events.DateInit,
-                Description = events.Description,
-                Name=events.Name,
-            };
+            eventsUser.Description = events.Description;
+            eventsUser.Name = events.Name;
+            eventsUser.DateInit = events.DateInit;  
+                
 
-            await eventRepositories.UserEventCreatorUpdate(UpdatedEvent);
-            return UpdatedEvent;
+            await eventRepositories.UserEventCreatorUpdate(eventsUser);
+
+            return eventsUser;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Ticket_App.Context;
+using Ticket_App.Controllers.Dto;
 using Ticket_App.Dto;
 using Ticket_App.Model;
 using Ticket_App.Repositories.interfaces;
@@ -53,18 +54,21 @@ namespace Ticket_App.Repositories
             return await context.Events.FirstOrDefaultAsync(events => events.Id == eventId && events.UserId == userId);
         }
 
-        public async Task<Events> UserEventCreatorUpdate(EventsDto eventsDto)
+        public async Task<Events> UserEventCreatorUpdate(Events events)
+     
         {
-            var updatedEvent = new Events
+            var eventExists = await UserEventCreatorFind(events.Id, events.UserId);
+            if(eventExists is null)
             {
-                DateInit = eventsDto.DataInit,
-                Description = eventsDto.Description,
-                Name = eventsDto.Name,
+                throw new Exception("user event not exists");
+            }
+            eventExists.DateInit = events.DateInit;
+            eventExists.Description = events.Description;
+            eventExists.Name = events.Name;
 
-            };
-            context.Events.Update(updatedEvent);
+            context.Events.Update(eventExists);
             await context.SaveChangesAsync();
-            return updatedEvent;
+            return eventExists;
         }
     }
 }

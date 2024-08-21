@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Security.Claims;
+using Ticket_App.Controllers.Dto;
 using Ticket_App.Dto;
 using Ticket_App.Dto.NovaPasta2;
 using Ticket_App.Model;
@@ -42,7 +43,7 @@ namespace Ticket_App.Controllers
             return user;
         }
         [HttpPatch("update-event")]
-        public async Task<ActionResult<Events>> UpdateUserEvent([FromQuery] Guid eventId, EventsDto eventsDto)
+        public async Task<ActionResult<Events>> UpdateUserEvent([FromQuery] Guid eventId, UpdateEventDto eventsUpdate)
         {
             var userId = Guid.Parse(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
@@ -50,8 +51,16 @@ namespace Ticket_App.Controllers
             {
                 Unauthorized("user desconnected");
             }
-            
-            var updatedEvent = await eventsService.UserUpdateYourEvent(eventId, userId, eventsDto);
+            Events events = new Events
+            {
+                Description = eventsUpdate.Description,
+                Name = eventsUpdate.Name,
+                DateInit = eventsUpdate.DataInit,
+
+
+            };
+
+            var updatedEvent = await eventsService.UserUpdateYourEvent(eventId, userId, events);
            
             return Ok(updatedEvent);
         }

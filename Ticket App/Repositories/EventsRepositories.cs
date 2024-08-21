@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Ticket_App.Context;
 using Ticket_App.Controllers.Dto;
 using Ticket_App.Dto;
@@ -43,6 +44,21 @@ namespace Ticket_App.Repositories
             return tickets.EventId;  
         }
 
+        public async Task<bool> DeleteUserEvent(Guid eventId, Guid userId)
+        {
+            var eventExists = await UserEventCreatorFind(eventId,userId);
+            
+            if (eventExists is null)
+            {
+                throw new Exception("user event not exists");
+            }
+
+            context.Events.Remove(eventExists);
+            
+            await context.SaveChangesAsync();
+
+            return true;
+        }
         public async Task<List<Events>> GetAllEventsCreatedByUser(Guid id)
         {
             return await context.Users.Where(e => e.Id == id).SelectMany(u => u.Event).ToListAsync();

@@ -72,7 +72,7 @@ namespace Ticket_App.Controllers
             return Ok(updatedEvent);
         }
 
-        [HttpGet]
+        [HttpGet("eventByUser")]
         public async Task<ActionResult<Events>> GetAllEventsCreatedByUser()
         {
             var userId = Guid.Parse(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
@@ -86,5 +86,24 @@ namespace Ticket_App.Controllers
 
             return Ok(allEvents);
         }
-    }
+        [HttpDelete("delete-event")]
+
+        public async Task<ActionResult<string>> DeleteUserEvent([FromQuery] Guid eventId)
+        {
+            var userId = Guid.Parse(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
+
+            if (userId == Guid.Empty)
+            {
+                Unauthorized("user disconnected");
+            }
+
+            var deletedEvent = await eventsService.DeleteUserEvent(eventId, userId);
+
+            return Ok(new
+            {
+                success = true,
+                message = "event deleted with sucess"
+            });
+        }
+     }
 }

@@ -12,7 +12,8 @@ namespace Ticket_App.Repositories.interfaces
         public Task<Events?> UserEventCreatorFind(Guid eventId, Guid userId);
         public Task<Events> UserEventCreatorUpdate(Events events);
         public Task<Users?> GetUserById(Guid Id);
-        public Task<List<Events>> GetAllEventsCreatedByUser(Guid Id); 
+        public Task<List<Events>> GetAllEventsCreatedByUser(Guid Id);
+        public Task<bool> DeleteUserEvent(Guid eventId, Guid userId);
 
     }
 }

@@ -36,6 +36,13 @@ namespace Ticket_App.Service
             return guid;
         }
 
+        public Task<bool> DeleteUserEvent(Guid eventId, Guid userId)
+        {
+            var eventDelete = eventRepositories.DeleteUserEvent(eventId, userId);
+
+            return eventDelete;
+        }
+
         public async Task<List<Events>> GetAllEventsCreatedByUser(Guid Id)
         {
             return await eventRepositories.GetAllEventsCreatedByUser(Id);

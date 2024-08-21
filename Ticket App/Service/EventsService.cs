@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using Ticket_App.Controllers.Dto;
 using Ticket_App.Dto;
 using Ticket_App.Model;
 using Ticket_App.Repositories.interfaces;
@@ -40,6 +41,26 @@ namespace Ticket_App.Service
         var user  = await eventRepositories.GetUserById(userId);
         
         return user;
+        }
+
+        public async Task<UpdateEventDto> UserUpdateYourEvent(Guid eventId, Guid userId, UpdateEventDto eventsDto)
+        {
+            var events = await eventRepositories.UserEventCreatorFind(eventId, userId);
+
+            if (events is null)
+            {
+                throw new Exception("events not found");
+            }
+
+            var UpdatedEvent = new UpdateEventDto
+            {
+                DataInit = events.DateInit,
+                Description = events.Description,
+                Name=events.Name,
+            };
+
+            await eventRepositories.UserEventCreatorUpdate(UpdatedEvent);
+            return UpdatedEvent;
         }
     }
 }

@@ -47,5 +47,24 @@ namespace Ticket_App.Repositories
         {
             return await context.Users.FirstOrDefaultAsync(user => user.Id == Id);
         }
+
+        public async Task<Events?> UserEventCreatorFind(Guid eventId, Guid userId)
+        {
+            return await context.Events.FirstOrDefaultAsync(events => events.Id == eventId && events.UserId == userId);
+        }
+
+        public async Task<Events> UserEventCreatorUpdate(EventsDto eventsDto)
+        {
+            var updatedEvent = new Events
+            {
+                DateInit = eventsDto.DataInit,
+                Description = eventsDto.Description,
+                Name = eventsDto.Name,
+
+            };
+            context.Events.Update(updatedEvent);
+            await context.SaveChangesAsync();
+            return updatedEvent;
+        }
     }
 }

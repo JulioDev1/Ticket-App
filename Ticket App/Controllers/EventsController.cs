@@ -41,5 +41,19 @@ namespace Ticket_App.Controllers
 
             return user;
         }
+        [HttpPatch("update-event")]
+        public async Task<ActionResult<Events>> UpdateUserEvent([FromQuery] Guid eventId, EventsDto eventsDto)
+        {
+            var userId = Guid.Parse(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
+
+            if (userId == Guid.Empty)
+            {
+                Unauthorized("user desconnected");
+            }
+            
+            var updatedEvent = await eventsService.UserUpdateYourEvent(eventId, userId, eventsDto);
+           
+            return Ok(updatedEvent);
+        }
     }
 }

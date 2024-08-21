@@ -55,7 +55,7 @@ namespace Ticket_App.Controllers
             
         }
 
-        [HttpGet("ticket-buy")]
+        [HttpGet("ticket-buy/product")]
         [Authorize]
         public async Task<ActionResult<Tickets?>> TicketById([FromQuery] Guid id)
         {

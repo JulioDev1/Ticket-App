@@ -7,6 +7,9 @@ namespace Ticket_App.Repositories.interfaces
     {
         public Task<Events> CreateEvent(EventsDto eventsDto);
         public Task<Guid> CreateTicketAtEvent(TicketsDto ticketsDto, Events events);
+
+        public Task<Events?> UserEventCreatorFind(Guid eventId, Guid userId);
+        public Task<Events> UserEventCreatorUpdate(EventsDto eventsDto);
         public Task<Users?> GetUserById(Guid Id);
 
     }

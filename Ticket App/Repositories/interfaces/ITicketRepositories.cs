@@ -10,6 +10,7 @@ namespace Ticket_App.Repositories.interfaces
 
         public Task<Tickets?> FindTicketById(Guid ticketId);
 
+
      
     }
 }

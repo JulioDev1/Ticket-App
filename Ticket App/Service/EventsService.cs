@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using Microsoft.Extensions.Logging;
+using System.Security.Claims;
 using Ticket_App.Controllers.Dto;
 using Ticket_App.Dto;
 using Ticket_App.Model;
@@ -35,6 +36,17 @@ namespace Ticket_App.Service
             return guid;
         }
 
+        public async Task<Events?> GetEventById(Guid eventId, Guid userId)
+        {
+            var eventsUser = await eventRepositories.UserEventCreatorFind(eventId,userId);
+            
+            if (eventsUser == null) {
+                throw new Exception("event not found");
+            }
+
+            return eventsUser;
+        }
+
         public async Task<Users?> GetUserId(Guid userId)
         {
 
@@ -43,9 +55,9 @@ namespace Ticket_App.Service
         return user;
         }
 
-        public async Task<Events> UserUpdateYourEvent(Guid eventId, Guid userId, Events events)
+        public async Task<Events> UserUpdateYourEvent( Events events)
         {
-            var eventsUser = await eventRepositories.UserEventCreatorFind(eventId, userId);
+            var eventsUser = await eventRepositories.UserEventCreatorFind(events.Id, events.UserId);
 
             if (eventsUser is null)
             {
@@ -61,5 +73,6 @@ namespace Ticket_App.Service
 
             return eventsUser;
         }
+
     }
 }

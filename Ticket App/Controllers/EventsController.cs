@@ -51,16 +51,22 @@ namespace Ticket_App.Controllers
             {
                 Unauthorized("user desconnected");
             }
+            var eventUser = await eventsService.GetEventById(eventId, userId);
+            if (eventUser == null)
+            {
+                throw new Exception("event not user");
+            }
+
             Events events = new Events
             {
                 Description = eventsUpdate.Description,
                 Name = eventsUpdate.Name,
                 DateInit = eventsUpdate.DataInit,
-
-
+                UserId = userId,
+                Id = eventId,
             };
 
-            var updatedEvent = await eventsService.UserUpdateYourEvent(eventId, userId, events);
+            var updatedEvent = await eventsService.UserUpdateYourEvent(events);
            
             return Ok(updatedEvent);
         }

@@ -67,6 +67,11 @@ namespace Ticket_App.Service
         return user;
         }
 
+        public async Task<List<Events>> ListAllTickets()
+        {
+            return await eventRepositories.ListAllTickets();
+        }
+
         public async Task<Events> UserUpdateYourEvent( Events events)
         {
             var eventsUser = await eventRepositories.UserEventCreatorFind(events.Id, events.UserId);

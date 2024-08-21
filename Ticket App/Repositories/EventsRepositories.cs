@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Reflection.Metadata.Ecma335;
 using Ticket_App.Context;
 using Ticket_App.Controllers.Dto;
 using Ticket_App.Dto;
@@ -67,6 +68,11 @@ namespace Ticket_App.Repositories
         public async Task<Users?> GetUserById(Guid Id)
         {
             return await context.Users.FirstOrDefaultAsync(user => user.Id == Id);
+        }
+
+        public async Task<List<Events>> ListAllTickets()
+        {
+            return await context.Events.ToListAsync();
         }
 
         public async Task<Events?> UserEventCreatorFind(Guid eventId, Guid userId)

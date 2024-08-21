@@ -13,6 +13,8 @@ namespace Ticket_App.Service.Interface
         Task<Events?> GetEventById(Guid eventId, Guid userId);
         Task<List<Events>> GetAllEventsCreatedByUser(Guid Id);
         Task<bool> DeleteUserEvent(Guid eventId, Guid userId);
+        Task<List<Events>> ListAllTickets();
+
 
     }
 }

@@ -36,6 +36,11 @@ namespace Ticket_App.Service
             return guid;
         }
 
+        public async Task<List<Events>> GetAllEventsCreatedByUser(Guid Id)
+        {
+            return await eventRepositories.GetAllEventsCreatedByUser(Id);
+        }
+
         public async Task<Events?> GetEventById(Guid eventId, Guid userId)
         {
             var eventsUser = await eventRepositories.UserEventCreatorFind(eventId,userId);

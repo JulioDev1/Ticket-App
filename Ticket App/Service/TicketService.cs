@@ -48,5 +48,6 @@ namespace Ticket_App.Service
             var guid = await ticketRepositories.UserBuyedTicketEvent(userExists, ticketsExists);
             return guid;
         }
+
     }
 }

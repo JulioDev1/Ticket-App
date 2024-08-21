@@ -43,7 +43,7 @@ namespace Ticket_App.Controllers
                 new Exception("user not found");
             }
 
-            return ticket;
+            return Ok(ticket);
 
         }
         [HttpGet("calculate-total")]

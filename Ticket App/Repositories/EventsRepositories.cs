@@ -43,6 +43,10 @@ namespace Ticket_App.Repositories
             return tickets.EventId;  
         }
 
+        public async Task<List<Events>> GetAllEventsCreatedByUser(Guid id)
+        {
+            return await context.Users.Where(e => e.Id == id).SelectMany(u => u.Event).ToListAsync();
+        }
 
         public async Task<Users?> GetUserById(Guid Id)
         {

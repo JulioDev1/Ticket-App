@@ -52,6 +52,7 @@ namespace Ticket_App.Controllers
                 Unauthorized("user desconnected");
             }
             var eventUser = await eventsService.GetEventById(eventId, userId);
+
             if (eventUser == null)
             {
                 throw new Exception("event not user");
@@ -63,12 +64,27 @@ namespace Ticket_App.Controllers
                 Name = eventsUpdate.Name,
                 DateInit = eventsUpdate.DataInit,
                 UserId = userId,
-                Id = eventId,
+                Id = eventUser.Id,
             };
 
             var updatedEvent = await eventsService.UserUpdateYourEvent(events);
            
             return Ok(updatedEvent);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<Events>> GetAllEventsCreatedByUser()
+        {
+            var userId = Guid.Parse(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
+
+            if (userId == Guid.Empty)
+            {
+                Unauthorized("user disconnected");
+            }
+
+            var allEvents = await eventsService.GetAllEventsCreatedByUser(userId);
+
+            return Ok(allEvents);
         }
     }
 }

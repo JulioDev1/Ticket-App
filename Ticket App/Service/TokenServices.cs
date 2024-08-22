@@ -11,13 +11,13 @@ using Ticket_App.Service.Interface;
 
 namespace Ticket_App.Service
 {
-    public class TokenService : ITokenService
+    public class TokenServices : ITokenService
     {
         private readonly IConfiguration configuration;
         private readonly IUserRepository userRepository;
         private PasswordHasher<string> criptography;
 
-        public TokenService(IConfiguration _configuration, IUserRepository _userRepository)
+        public TokenServices(IConfiguration _configuration, IUserRepository _userRepository)
         {
             configuration = _configuration;
             userRepository = _userRepository;

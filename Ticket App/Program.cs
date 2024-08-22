@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Stripe;
 using System.Text;
 using Ticket_App.Context;
 using Ticket_App.Repositories;
@@ -12,6 +13,7 @@ using Ticket_App.Service.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:Sc_Key"];
 
 // Add services to the container.
 builder.Services.AddDbContext<UserContext>(options =>
@@ -23,7 +25,7 @@ builder.Services.AddDbContext<UserContext>(options =>
 builder.Services.AddScoped<IUserRepository, UserRepostories>();
 builder.Services.AddScoped<IEventRepositories, EventsRepositories>();
 builder.Services.AddScoped<IUserService, UserServices>();
-builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<ITokenService, TokenServices>();
 builder.Services.AddScoped<IEventsService, EventsService>();
 builder.Services.AddScoped<ITicketRepositories, TicketRepositories>();
 builder.Services.AddScoped<ITicketsService, TicketService>();

@@ -29,7 +29,6 @@ builder.Services.AddScoped<ITokenService, TokenServices>();
 builder.Services.AddScoped<IEventsService, EventsService>();
 builder.Services.AddScoped<ITicketRepositories, TicketRepositories>();
 builder.Services.AddScoped<ITicketsService, TicketService>();
-builder.Services.AddScoped<IPaymentService, PaymentService>(); 
 
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var secretkey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["key"] ?? String.Empty));

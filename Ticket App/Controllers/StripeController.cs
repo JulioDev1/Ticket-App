@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using Stripe;
 using Stripe.Checkout;
 using Stripe.FinancialConnections;
@@ -84,7 +85,15 @@ namespace Ticket_App.Controllers
             var sessionService = new Stripe.Checkout.SessionService();
             Stripe.Checkout.Session session = sessionService.Get(session_id);
 
-            return Json(new { status = session.RawJObject["status"], customer_email = session.RawJObject["customer_details"]!["email"] });
+            // Verifica se "customer_details" é um JObject e tenta acessar o email de forma segura
+            var customerDetails = session.RawJObject["customer_details"] as JObject;
+            string customerEmail = customerDetails?["email"]?.ToString() ?? "Email not available";
+
+            return Ok(new
+            {
+                status = session.RawJObject["status"]?.ToString() ?? "Status not available",
+                customer_email = customerEmail
+            });
         }
 
 

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Stripe;
-using Stripe.Forwarding;
+using Stripe.Checkout;
+using Stripe.FinancialConnections;
 using System.Security.Claims;
-using Ticket_App.Dto;
 using Ticket_App.Service.Interface;
 
 namespace Ticket_App.Controllers
@@ -23,21 +23,72 @@ namespace Ticket_App.Controllers
 
         [HttpPost("payment-stripe")]
         [Authorize]
-        public async Task <ActionResult> CheckOutOrder()
+        public async Task <string> CheckOutOrder()
         {
-            var paymentIntentService = new PaymentIntentService();
-            var paymentIntent = paymentIntentService.Create(new PaymentIntentCreateOptions
-            {
-                Amount = await CalculateOrderAmount(),
-                Currency = "brl",
-                AutomaticPaymentMethods = new PaymentIntentAutomaticPaymentMethodsOptions
-                {
-                    Enabled = true,
-                },
-            });
+            var domain = "http://localhost:5173/";
+            
+            var id = (User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
-            return Json(new { clientSecret = paymentIntent.ClientSecret });
+            var guid = Guid.Parse(id);
+
+            var ticket = await userService.ListUserTickets(guid);
+
+            var TicketMapped = ticket.Select(t => new
+            {
+                Name = t.Name ?? "No Name",
+                Event = t.Event != null && t.Event.Description != null ? t.Event.Description : "No Description",
+            }).ToList();
+
+            if (ticket is null || !ticket.Any())
+            {
+                new Exception("user not found ");
+            }
+
+            var options = new Stripe.Checkout.SessionCreateOptions
+            {
+
+                LineItems = new List<SessionLineItemOptions> {
+                    new()
+                    {
+                        PriceData = new SessionLineItemPriceDataOptions
+                        {
+                            UnitAmount = await CalculateOrderAmount(),
+                            Currency = "BRL",
+                            ProductData = new SessionLineItemPriceDataProductDataOptions
+                            {
+                              Name= string.Join(",", TicketMapped.Select(t=> t.Name )),
+                              Description = string.Join(" | ", TicketMapped.Select(t=> t.Event))
+
+                            },
+                        },
+                        Quantity = 1,
+                    }
+                   
+                },
+               
+
+                Mode = "payment",
+                SuccessUrl = domain + "?sucess=true",
+                CancelUrl = domain +"?canceled=true"
+                
+            };
+            var service = new Stripe.Checkout.SessionService();
+            Stripe.Checkout.Session session = await service.CreateAsync(options);
+
+            return session.Id;
         }
+
+        [HttpGet("session-status")]
+        public ActionResult SessionStatus([FromQuery] string session_id)
+        {
+            var sessionService = new Stripe.Checkout.SessionService();
+            Stripe.Checkout.Session session = sessionService.Get(session_id);
+
+            return Json(new { status = session.RawJObject["status"], customer_email = session.RawJObject["customer_details"]!["email"] });
+        }
+
+
+
         private async Task<long> CalculateOrderAmount()
         {
             var id = (User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
